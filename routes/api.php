@@ -26,5 +26,6 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+    Route::get('checkAuth', [Login::class, 'checkAuth']);
     Route::post('/send', [ShareDocumentController::class, 'store']);
 });
