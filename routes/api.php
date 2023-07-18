@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\GetSharedDocumentsController;
+use App\Http\Controllers\GetUsersListController;
 use App\Http\Controllers\ShareDocumentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +30,7 @@ Route::prefix('v1')->group(function () {
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('checkAuth', [Login::class, 'checkAuth']);
     Route::post('/send', [ShareDocumentController::class, 'store']);
+    Route::post('/inbox', [GetSharedDocumentsController::class, 'inbox']);
+    Route::post('/sent', [GetSharedDocumentsController::class, 'sent']);
+    Route::get('users', [GetUsersListController::class, 'usersList']);
 });
