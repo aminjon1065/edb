@@ -30,7 +30,6 @@ class ShareDocumentController extends Controller
                 $originalName = str_replace(' ', '_', $file->getClientOriginalName());
                 $filename = auth()->user()->first_name . '_' . auth()->user()->last_name . '_' . auth()->user()->region . '_' . uniqid() . '_' . $originalName;
                 $file->storeAs('public/documents/' . auth()->user()->region, $filename);
-
                 $document->file()->create([
                     'name' => $filename,
                     'size' => round($file->getSize() / 1024 / 1024 * 1024, 2),

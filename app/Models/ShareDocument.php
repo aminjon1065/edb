@@ -39,4 +39,15 @@ class ShareDocument extends Model
     {
         return $this->belongsTo(Document::class);
     }
+
+    public function toUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'to', 'id');
+    }
+
+    public function fromUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'from', 'id');
+    }
+
 }

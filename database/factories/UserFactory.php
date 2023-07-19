@@ -26,7 +26,7 @@ class UserFactory extends Factory
             'full_name' => $firstName . ' ' . $lastName,
             'position' => fake()->jobTitle,
             'department' => fake()->colorName(),
-            'region' => fake()->city(),
+            'region' => fake()->country(),
             'rank' => fake()->randomLetter(),
             'avatar' => fake()->imageUrl(),
             'signature' => fake()->imageUrl(),
