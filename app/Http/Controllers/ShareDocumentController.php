@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotificationSharedMail;
 use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -51,7 +52,7 @@ class ShareDocumentController extends Controller
                 'toRais' => $request->input('toRais'),
                 'isReply' => false
             ]);
-//            NotificationMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
+            NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
         }
 
         if (!$document->shareDocument) {
