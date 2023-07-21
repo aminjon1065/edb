@@ -31,6 +31,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('checkAuth', [Login::class, 'checkAuth']);
     Route::post('/send', [ShareDocumentController::class, 'store']);
     Route::post('/inbox', [GetSharedDocumentsController::class, 'inbox']);
+    Route::post('/inbox/{uuid}', [GetSharedDocumentsController::class, 'showMail']);
     Route::post('/sent', [GetSharedDocumentsController::class, 'sent']);
     Route::get('users', [GetUsersListController::class, 'usersList']);
 });

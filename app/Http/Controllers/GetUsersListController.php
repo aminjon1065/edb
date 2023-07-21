@@ -11,14 +11,14 @@ class GetUsersListController extends Controller
     {
         $users = User::all()->map(function ($user) {
             if (auth()->user()->id == 1) {
-                if ($user->email === 'rustam@admin.com') {
+                if ($user->role === 99) {
                     return [
                         'value' => $user->id,
                         'label' => $user->full_name . ' (Председатель)'
                     ];
                 }
             } else {
-                if ($user->email === 'rustam@admin.com') {
+                if ($user->role === 99) {
                     return null; // Пропустить пользователя с указанным email
                 }
             }

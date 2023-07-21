@@ -54,7 +54,7 @@ class GetSharedDocumentsController extends Controller
 
     public function showMail($uuid)
     {
-        return ShareDocument::with(['document', 'fromUser', 'replyMail'])
+        return ShareDocument::with(['document.replyToDocument', 'fromUser'])
             ->where('uuid', $uuid)
             ->first();
     }

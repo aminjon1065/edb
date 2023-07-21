@@ -43,4 +43,8 @@ class Document extends Model
     {
         return $this->hasMany(ShareDocument::class);
     }
+    public function replyToDocument():HasMany
+    {
+        return  $this->hasMany(ReplyToDocument::class);
+    }
 }
