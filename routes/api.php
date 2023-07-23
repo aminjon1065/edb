@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\DownloadZipArchiveFiles;
 use App\Http\Controllers\GetSharedDocumentsController;
 use App\Http\Controllers\GetUsersListController;
+use App\Http\Controllers\ReplyToDocumentController;
 use App\Http\Controllers\ShareDocumentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,5 +35,8 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('/inbox', [GetSharedDocumentsController::class, 'inbox']);
     Route::post('/inbox/{uuid}', [GetSharedDocumentsController::class, 'showMail']);
     Route::post('/sent', [GetSharedDocumentsController::class, 'sent']);
-    Route::get('users', [GetUsersListController::class, 'usersList']);
+    Route::get('/users', [GetUsersListController::class, 'usersList']);
+    Route::post('/showed/{uuid}', [GetSharedDocumentsController::class, 'showed']);
+    Route::post('/reply/{uuid}', [ReplyToDocumentController::class, 'reply']);
 });
+

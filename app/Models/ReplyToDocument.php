@@ -20,6 +20,11 @@ class ReplyToDocument extends Model
         ];
 
 
+    public function document(): BelongsTo
+    {
+        return $this->belongsTo(Document::class, 'document_id', 'id');
+    }
+
     public function shareDocument(): BelongsTo
     {
         return $this->belongsTo(ShareDocument::class);

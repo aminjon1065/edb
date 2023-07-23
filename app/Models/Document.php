@@ -22,7 +22,6 @@ class Document extends Model
         'user_id',
         'date_done'
     ];
-
     protected $casts = [
         'date_done' => 'datetime',
         'uuid' => 'string',
@@ -43,8 +42,9 @@ class Document extends Model
     {
         return $this->hasMany(ShareDocument::class);
     }
-    public function replyToDocument():HasMany
+
+    public function replyToDocument(): HasMany
     {
-        return  $this->hasMany(ReplyToDocument::class);
+        return $this->hasMany(ReplyToDocument::class, 'reply_document_id', 'id');
     }
 }

@@ -38,7 +38,7 @@ class ShareDocument extends Model
 
     public function document(): BelongsTo
     {
-        return $this->belongsTo(Document::class)->with("file");
+        return $this->belongsTo(Document::class)->with(["file", "replyToDocument"]);
     }
 
     public function toUser(): BelongsTo

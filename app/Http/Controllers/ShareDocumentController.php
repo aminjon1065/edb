@@ -14,7 +14,6 @@ class ShareDocumentController extends Controller
         if (!$request->has('to')) {
             return response()->json('Такого пользователя не существует', 200);
         }
-
         $document = Document::create([
             'uuid' => Str::uuid()->toString(),
             'title' => $request->input('title'),
@@ -30,7 +29,7 @@ class ShareDocumentController extends Controller
             foreach ($request->file('files') as $file) {
                 $originalName = str_replace(' ', '_', $file->getClientOriginalName());
                 $filename = auth()->user()->first_name . '_' . auth()->user()->last_name . '_' . auth()->user()->region . '_' . uniqid() . '_' . $originalName;
-                $file->storeAs('public/documents/' . auth()->user()->region, $filename);
+                $file->storeAs('public/documents/' . auth()->user()->region.'/'.$document->uuid, $filename);
                 $document->file()->create([
                     'name' => $filename,
                     'size' => round($file->getSize() / 1024 / 1024 * 1024, 2),
@@ -54,11 +53,9 @@ class ShareDocumentController extends Controller
             ]);
             NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
         }
-
         if (!$document->shareDocument) {
             return response()->json('Ошибка при отправке', 200);
         }
-
         return response()->json($document->shareDocument, 201);
     }
 }
