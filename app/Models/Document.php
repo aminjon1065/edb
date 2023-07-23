@@ -45,6 +45,7 @@ class Document extends Model
 
     public function replyToDocument(): HasMany
     {
-        return $this->hasMany(ReplyToDocument::class, 'reply_document_id', 'id');
+        return $this->hasMany(ReplyToDocument::class, 'reply_document_id', 'id')->with(['fromUser', 'document.file']);
     }
+
 }
