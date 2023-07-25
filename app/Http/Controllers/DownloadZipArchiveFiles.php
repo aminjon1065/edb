@@ -33,7 +33,6 @@ class DownloadZipArchiveFiles extends Controller
         } else {
             return response()->json(['error' => 'Failed to create zip archive'], 500);
         }
-
         return response()->download($zipFilePath)->deleteFileAfterSend(true);
     }
 }

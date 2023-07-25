@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\NotificationSharedMail;
 use App\Models\Document;
+use App\Models\ShareDocument;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -29,7 +31,7 @@ class ShareDocumentController extends Controller
             foreach ($request->file('files') as $file) {
                 $originalName = str_replace(' ', '_', $file->getClientOriginalName());
                 $filename = auth()->user()->first_name . '_' . auth()->user()->last_name . '_' . auth()->user()->region . '_' . uniqid() . '_' . $originalName;
-                $file->storeAs('public/documents/' . auth()->user()->region.'/'.$document->uuid, $filename);
+                $file->storeAs('public/documents/' . auth()->user()->region . '/' . $document->uuid, $filename);
                 $document->file()->create([
                     'name' => $filename,
                     'size' => round($file->getSize() / 1024 / 1024 * 1024, 2),
@@ -53,9 +55,27 @@ class ShareDocumentController extends Controller
             ]);
             NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
         }
+        if ($request->input('toRais')) {
+            $document->toRais()->create([
+                'document_id' => $document->id,
+//                'toRais' => $request->input('toRais'),
+            ]);
+        }
         if (!$document->shareDocument) {
             return response()->json('Ошибка при отправке', 200);
         }
         return response()->json($document->shareDocument, 201);
+    }
+
+    public function toRaisReplyDocument($uuid)
+    {
+        $shared = ShareDocument::whereUuid($uuid)->firstOrFail();
+        if ($shared)
+        {
+            $shared->update(['toRais' => true]);
+            $raisId = User::where('email', 'rais@admin.com')->firstOrFail()->id;
+            NotificationSharedMail::dispatch($shared->uuid, $raisId);
+        }
+        return response()->json('error');
     }
 }

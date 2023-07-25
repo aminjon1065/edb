@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Models\ReplyToDocument;
+use App\Models\ToRais;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -42,5 +43,30 @@ class ReplyToDocumentController extends Controller
             'reply_document_id' => $replyToDocument->id,
         ]);
         return response()->json($replyDocument, 200);
+    }
+
+    public function fromRaisToUsers(Request $request, $id)
+    {
+        $replyRais = ToRais::whereId($id)->firstOrFail();
+
+        if ($replyRais) {
+            $newReplyTo = $request->input('replyTo', []); // Предполагается, что 'replyTo' передаётся в виде массива в запросе
+
+            // Если replyTo равно null, инициализируем его пустым массивом
+            $existingReplyTo = $replyRais->replyTo ?? [];
+
+            // Обновляем поле replyTo в модели
+            $updatedReplyTo = array_merge($existingReplyTo, $newReplyTo);
+
+            // Альтернативный вариант с использованием оператора распространения (spread operator)
+            // $updatedReplyTo = [...$existingReplyTo, ...$newReplyTo];
+
+            $replyRais->replyTo = $updatedReplyTo;
+            $replyRais->save();
+
+            // Другие операции или перенаправления, если нужно
+        } else {
+            // Обработка случая, когда запись не найдена
+        }
     }
 }

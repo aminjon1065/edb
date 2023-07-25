@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ToRais extends Model
@@ -19,4 +20,9 @@ class ToRais extends Model
         [
             'replyTo' => 'array'
         ];
+
+    public function document(): BelongsTo
+    {
+        return $this->belongsTo(Document::class, 'document_id', 'id');
+    }
 }

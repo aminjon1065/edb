@@ -5,6 +5,7 @@ use App\Http\Controllers\GetSharedDocumentsController;
 use App\Http\Controllers\GetUsersListController;
 use App\Http\Controllers\ReplyToDocumentController;
 use App\Http\Controllers\ShareDocumentController;
+use App\Http\Controllers\UpdateStatusDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login;
@@ -38,5 +39,8 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('/users', [GetUsersListController::class, 'usersList']);
     Route::post('/showed/{uuid}', [GetSharedDocumentsController::class, 'showed']);
     Route::post('/reply/{uuid}', [ReplyToDocumentController::class, 'reply']);
+    Route::post('/update-status/{uuid}', [UpdateStatusDocument::class, 'updateStatus']);
+    Route::post('/to-rais/{id}', [ReplyToDocumentController::class, 'fromRaisToUsers']);
+    Route::post("/to-rais-reply/{uuid}", [ShareDocumentController::class, 'toRaisReplyDocument']);
 });
 
