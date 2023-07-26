@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ShareDocument;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -52,11 +53,32 @@ class GetSharedDocumentsController extends Controller
 
     public function showMail($uuid)
     {
+        $shareDocument = ShareDocument::whereUuid($uuid)->with(['document.replyToDocument', 'fromUser'])->first();
 
-        return ShareDocument::whereUuid($uuid)->with(['document.replyToDocument', 'fromUser'])->first();
-//        return ShareDocument::with(['document.replyToDocument.fromUser', 'document.replyToDocument.document', 'fromUser'])
-//            ->where('uuid', $uuid)
-//            ->first();
+        if ($shareDocument) {
+            // Получаем идентификаторы пользователей из поля replyTo
+            $replyToUserIds = $shareDocument->document->toRais->replyTo ?? [];
+
+            // Инициализируем пустой массив для хранения связанных пользователей
+            $replyToUsers = [];
+
+            // Перебираем идентификаторы пользователей и ищем их в модели User
+            foreach ($replyToUserIds as $userId) {
+                $user = User::find($userId);
+                if ($user) {
+                    $replyToUsers[] = $user;
+                }
+            }
+
+            // Добавляем массив связанных пользователей в объект $shareDocument
+            $shareDocument->replyToUsers = $replyToUsers;
+
+            // Вернуть ShareDocument с связанными пользователями в виде JSON-ответа
+            return response()->json($shareDocument);
+        } else {
+            // Обработка случая, когда запись не найдена
+            return response()->json(['message' => 'Документ не найден'], 404);
+        }
     }
 
     public function showed($uuid)

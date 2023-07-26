@@ -48,22 +48,16 @@ class ReplyToDocumentController extends Controller
     public function fromRaisToUsers(Request $request, $id)
     {
         $replyRais = ToRais::whereId($id)->firstOrFail();
-
         if ($replyRais) {
             $newReplyTo = $request->input('replyTo', []); // Предполагается, что 'replyTo' передаётся в виде массива в запросе
-
             // Если replyTo равно null, инициализируем его пустым массивом
             $existingReplyTo = $replyRais->replyTo ?? [];
-
             // Обновляем поле replyTo в модели
             $updatedReplyTo = array_merge($existingReplyTo, $newReplyTo);
-
             // Альтернативный вариант с использованием оператора распространения (spread operator)
             // $updatedReplyTo = [...$existingReplyTo, ...$newReplyTo];
-
             $replyRais->replyTo = $updatedReplyTo;
             $replyRais->save();
-
             // Другие операции или перенаправления, если нужно
         } else {
             // Обработка случая, когда запись не найдена
