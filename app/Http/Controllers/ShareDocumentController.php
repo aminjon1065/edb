@@ -70,9 +70,11 @@ class ShareDocumentController extends Controller
     public function toRaisReplyDocument($uuid)
     {
         $shared = ShareDocument::whereUuid($uuid)->firstOrFail();
-        if ($shared)
-        {
+        if ($shared) {
             $shared->update(['toRais' => true]);
+            $shared->document->toRais()->create([
+                'document_id' => $shared->document->id,
+            ]);
             $raisId = User::where('email', 'rais@admin.com')->firstOrFail()->id;
             NotificationSharedMail::dispatch($shared->uuid, $raisId);
         }
