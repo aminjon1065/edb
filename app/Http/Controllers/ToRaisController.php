@@ -11,4 +11,9 @@ class ToRaisController extends Controller
     {
         return ToRais::with('document.user')->paginate(25);
     }
+
+    public function getRepliedToRaisById($id)
+    {
+        return ToRais::whereId($id)->with(['document.file', 'document.user'])->firstOrFail();
+    }
 }

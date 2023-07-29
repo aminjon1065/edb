@@ -11,4 +11,8 @@ class UpdateStatusDocument extends Controller
     {
         Document::where('uuid', $uuid)->update(['status' => 'success']);
     }
+    public function updateControl(Request $request,$uuid):void
+    {
+        Document::whereUuid($uuid)->update(['control'=>1, 'date_done'=>$request->input('date_done')]);
+    }
 }

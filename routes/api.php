@@ -41,8 +41,10 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post('/showed/{uuid}', [GetSharedDocumentsController::class, 'showed']);
     Route::post('/reply/{uuid}', [ReplyToDocumentController::class, 'reply']);
     Route::post('/update-status/{uuid}', [UpdateStatusDocument::class, 'updateStatus']);
+    Route::post('/update-control/{uuid}', [UpdateStatusDocument::class, 'updateControl']);
     Route::post('/to-rais/{id}', [ReplyToDocumentController::class, 'fromRaisToUsers']);
     Route::post("/to-rais-reply/{uuid}", [ShareDocumentController::class, 'toRaisReplyDocument']);
     Route::get('/get-replied-to-rais', [ToRaisController::class, 'getRepliedToRais']);
+    Route::get('/get-replied-to-rais/{id}', [ToRaisController::class, 'getRepliedToRaisById']);
 });
 
