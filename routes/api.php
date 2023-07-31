@@ -47,4 +47,3 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('/get-replied-to-rais', [ToRaisController::class, 'getRepliedToRais']);
     Route::get('/get-replied-to-rais/{id}', [ToRaisController::class, 'getRepliedToRaisById']);
 });
-

@@ -47,7 +47,7 @@ class GetSharedDocumentsController extends Controller
             ->when($request->input('order') && $request->input('column'), function ($query) use ($request) {
                 return $query->orderBy($request->input('column'), $request->input('order'));
             });
-        $documents = $query->paginate(20);
+        $documents = $query->paginate(10);
         return response()->json($documents);
     }
 
