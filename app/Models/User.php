@@ -60,4 +60,5 @@ class User extends Authenticatable
     {
         return $this->hasMany(ShareDocument::class);
     }
+
 }

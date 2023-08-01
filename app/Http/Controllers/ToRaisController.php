@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ToRais;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -35,6 +36,18 @@ class ToRaisController extends Controller
 
     public function getRepliedToRaisById($id)
     {
-        return ToRais::whereId($id)->with(['document.file', 'document.user'])->firstOrFail();
+        // Получаем ToRais по указанному id вместе с связанными моделями document.file и document.user
+        $toRais = ToRais::whereId($id)->with(['document.file', 'document.user'])->firstOrFail();
+
+        // Получаем массив с id пользователей из replyTo
+        $userIds = $toRais->replyTo ?? [];
+
+        // Получаем пользователей с соответствующими id
+        $replyToUsers = User::whereIn('id', $userIds)->get();
+
+        // Теперь $users содержит коллекцию пользователей, которые соответствуют id из replyTo
+
+        // Возвращаем ToRais и пользователей
+        return compact('toRais', 'replyToUsers');
     }
 }

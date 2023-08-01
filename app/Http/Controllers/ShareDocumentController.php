@@ -80,4 +80,24 @@ class ShareDocumentController extends Controller
         }
         return response()->json('error');
     }
+
+    public function sharedRaisReplyToUsers(Request $request, $uuid)
+    {
+        $document = Document::whereUuid($uuid)->firstOrFail();
+        $arrTo = $request->input('userIds');
+        foreach ($arrTo as $item) {
+            $mailUUID = Str::uuid()->toString(); // Сохраняем UUID в переменную
+            $document->shareDocument()->create([
+                'uuid' => $mailUUID,
+                'to' => $item,
+                'from' => auth()->user()->id,
+                'opened' => false,
+                'document_id' => $document->id,
+                'toRais' => $request->input('toRais'),
+                'isReply' => true
+            ]);
+            NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
+        }
+        return response()->json($document);
+    }
 }

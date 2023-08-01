@@ -23,6 +23,6 @@ class ToRais extends Model
 
     public function document(): BelongsTo
     {
-        return $this->belongsTo(Document::class, 'document_id', 'id');
+        return $this->belongsTo(Document::class, 'document_id', 'id')->with(["file", "replyToDocument", "toRais"]);
     }
 }
