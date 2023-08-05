@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('to_rais', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('document_id')->references('id')->on('documents')->onDelete('cascade');
             $table->json('replyTo')->nullable();
             $table->timestamps();
