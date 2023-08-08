@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('to_rais', function (Blueprint $table) {
+        Schema::create('to_management', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
             $table->foreignId('management_id')->references('id')->on('users');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('to_rais');
+        Schema::dropIfExists('to_management');
     }
 };

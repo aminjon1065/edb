@@ -13,11 +13,15 @@ class ToRais extends Model
 
     protected $fillable =
         [
+            'uuid',
+            'management_id',
             'document_id',
-            'replyTo'
+            'replyTo',
+            'opened'
         ];
     protected $casts =
         [
+            'opened' => 'boolean',
             'replyTo' => 'array'
         ];
 

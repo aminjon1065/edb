@@ -13,9 +13,7 @@ class ShareDocumentController extends Controller
 {
     public function store(Request $request)
     {
-        if (!$request->has('to')) {
-            return response()->json('Такого пользователя не существует', 200);
-        }
+
         $document = Document::create([
             'uuid' => Str::uuid()->toString(),
             'title' => $request->input('title'),
@@ -41,24 +39,32 @@ class ShareDocumentController extends Controller
             }
         }
 
-        $arrTo = $request->input('to');
-        foreach ($arrTo as $item) {
-            $mailUUID = Str::uuid()->toString(); // Сохраняем UUID в переменную
-            $document->shareDocument()->create([
-                'uuid' => $mailUUID,
-                'to' => $item,
-                'from' => auth()->user()->id,
-                'opened' => false,
-                'document_id' => $document->id,
-                'toRais' => $request->input('toRais'),
-                'isReply' => false
-            ]);
-            NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
+        if ($request->has('to')) {
+            $arrTo = $request->input('to');
+            foreach ($arrTo as $item) {
+                $mailUUID = Str::uuid()->toString(); // Сохраняем UUID в переменную
+                $document->shareDocument()->create([
+                    'uuid' => $mailUUID,
+                    'to' => $item,
+                    'from' => auth()->user()->id,
+                    'opened' => false,
+                    'document_id' => $document->id,
+                    'toRais' => $request->input('toRais'),
+                    'isReply' => false
+                ]);
+                NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
+            }
         }
+
         if ($request->input('toRais')) {
-            $document->toRais()->create([
+            $document->toManagement()->create([
+                'uuid' => Str::uuid()->toString(),
+                'management_id' => 3,
                 'document_id' => $document->id,
-//                'toRais' => $request->input('toRais'),
+                'opened' => false
+            ]);
+            $document->shareDocument()->update([
+                'isReply' => true
             ]);
         }
         if (!$document->shareDocument) {
@@ -67,16 +73,18 @@ class ShareDocumentController extends Controller
         return response()->json($document->shareDocument, 201);
     }
 
-    public function toRaisReplyDocument($uuid)
+    public function toRaisReplyDocument(Request $request, $uuid)
     {
         $shared = ShareDocument::whereUuid($uuid)->firstOrFail();
         if ($shared) {
             $shared->update(['toRais' => true]);
             $shared->document->toRais()->create([
+                'uuid' => Str::uuid()->toString(),
+                'management_id' => $request->input('management_id'),
                 'document_id' => $shared->document->id,
             ]);
-            $raisId = User::where('email', 'rais@admin.com')->firstOrFail()->id;
-            NotificationSharedMail::dispatch($shared->uuid, $raisId);
+//            $raisId = User::where('email', 'rais@admin.com')->firstOrFail()->id;
+            NotificationSharedMail::dispatch($shared->uuid, 3);
         }
         return response()->json('error');
     }
@@ -84,7 +92,8 @@ class ShareDocumentController extends Controller
     public function sharedRaisReplyToUsers(Request $request, $uuid)
     {
         $document = Document::whereUuid($uuid)->firstOrFail();
-        $arrTo = $request->input('userIds');
+        $arrTo = $document->toRais->replyTo;
+
         foreach ($arrTo as $item) {
             $mailUUID = Str::uuid()->toString(); // Сохраняем UUID в переменную
             $document->shareDocument()->create([

@@ -53,4 +53,8 @@ class Document extends Model
     {
         return $this->hasOne(ToRais::class, 'document_id', 'id');
     }
+    public function toManagement():HasOne
+    {
+        return $this->hasOne(ToManagement::class);
+    }
 }

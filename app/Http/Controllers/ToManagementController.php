@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ToRais;
+use App\Models\ToManagement;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ToRaisController extends Controller
+class ToManagementController extends Controller
 {
-    public function getRepliedToRais(Request $request)
+    public function getRepliedToManagement(Request $request)
     {
-        $query = ToRais::where('management_id', auth()->user()->id)->with('document')
+        $query = ToManagement::with('document')
             ->with('document.user')
-            ->when($request->input('query'), function ($query, $searchQuery) {
-                return $query->where(function ($subQuery) use ($searchQuery) {
-                    $subQuery->whereHas('document.user', function ($subSubQuery) use ($searchQuery) {
+            ->when($request->input('query'), function ($query, $searchQuery){
+                return $query->where(function ($subQuery)  use ($searchQuery){
+                    $subQuery->whereHas('document.user', function ($subSubQuery) use ($searchQuery){
                         $subSubQuery->where('title', 'LIKE', '%' . $searchQuery . '%')
                             ->orWhere('content', 'LIKE', '%' . $searchQuery . '%')
-                            ->orWhere('type', 'LIKE', '%' . $searchQuery . '%');
-                    });
+                            ->orWhere('type', 'LIKE', '%' . $searchQuery . '%');                    });
                 });
             })
             ->when($request->input('startDate') && $request->input('endDate'), function ($query) use ($request) {
@@ -34,10 +33,10 @@ class ToRaisController extends Controller
         return response()->json($documents);
     }
 
-    public function getRepliedToRaisById($id)
+    public function getRepliedToManagementById($id)
     {
         // Получаем ToRais по указанному id вместе с связанными моделями document.file и document.user
-        $toRais = ToRais::whereId($id)->with(['document.file', 'document.user'])->firstOrFail();
+        $toRais = ToManagement::whereId($id)->with(['document.file', 'document.user'])->firstOrFail();
 
         // Получаем массив с id пользователей из replyTo
         $userIds = $toRais->replyTo ?? [];
