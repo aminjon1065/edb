@@ -29,4 +29,7 @@ class ToRais extends Model
     {
         return $this->belongsTo(Document::class, 'document_id', 'id')->with(["file", "replyToDocument", "toRais"]);
     }
+    public function user():BelongsTo{
+        return $this->belongsTo(User::class, 'management_id', 'id');
+    }
 }

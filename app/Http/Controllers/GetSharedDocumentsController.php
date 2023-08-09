@@ -57,7 +57,7 @@ class GetSharedDocumentsController extends Controller
 
     public function showMail($uuid)
     {
-        $shareDocument = ShareDocument::whereUuid($uuid)->with(['document.replyToDocument', 'fromUser'])->first();
+        $shareDocument = ShareDocument::whereUuid($uuid)->with(['document.replyToDocument', 'fromUser', 'document.toRais.user'])->first();
 
         if ($shareDocument) {
             // Получаем идентификаторы пользователей из поля replyTo
@@ -70,6 +70,9 @@ class GetSharedDocumentsController extends Controller
             foreach ($replyToUserIds as $userId) {
                 $user = User::find($userId);
                 if ($user) {
+                    $replyToCollection = collect($shareDocument->document->toRais->replyTo);
+                    $userHasSentDocument = $replyToCollection->contains($user->id);
+                    $user->hasSentDocument = $userHasSentDocument;
                     $replyToUsers[] = $user;
                 }
             }
