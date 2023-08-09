@@ -36,7 +36,11 @@ class GetSharedDocumentsController extends Controller
                             ->orWhere('type', 'LIKE', '%' . $searchQuery . '%');
                     })->orWhereHas('fromUser', function ($subSubQuery) use ($searchQuery) {
                         $subSubQuery->where('full_name', 'LIKE', '%' . $searchQuery . '%');
-                    });
+                    })->orWhereHas('toUser', function ($subSubQuery) use ($searchQuery) {
+                        $subSubQuery->where('full_name', 'LIKE', '%' . $searchQuery . '%');
+                    })
+
+                    ;
                 });
             })
             ->when($request->input('startDate') && $request->input('endDate'), function ($query) use ($request) {
