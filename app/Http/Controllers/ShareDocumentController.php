@@ -38,7 +38,17 @@ class ShareDocumentController extends Controller
                 ]);
             }
         }
-
+        if ($request->input('toRais')) {
+            $document->toRais()->create([
+                'uuid' => Str::uuid()->toString(),
+                'management_id' => 4,
+                'document_id' => $document->id,
+                'opened' => false
+            ]);
+            $document->shareDocument()->update([
+                'isReply' => true
+            ]);
+        }
         if ($request->has('to')) {
             $arrTo = $request->input('to');
             foreach ($arrTo as $item) {
@@ -56,17 +66,7 @@ class ShareDocumentController extends Controller
             }
         }
 
-        if ($request->input('toRais')) {
-            $document->toManagement()->create([
-                'uuid' => Str::uuid()->toString(),
-                'management_id' => 3,
-                'document_id' => $document->id,
-                'opened' => false
-            ]);
-            $document->shareDocument()->update([
-                'isReply' => true
-            ]);
-        }
+
         if (!$document->shareDocument) {
             return response()->json('Ошибка при отправке', 200);
         }
