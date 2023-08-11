@@ -10,11 +10,11 @@ class GetUsersListController extends Controller
     public function usersList()
     {
         $users = User::all()->map(function ($user) {
-            if (auth()->user()->role === 1) {
+            if (auth()->user()->role === 1 || 99) {
                 if ($user->role == 99) {
                     return [
                         'value' => $user->id,
-                        'label' => $user->full_name . ' (Председатель)'
+                        'label' => $user->full_name . ' (Руководство)'
                     ];
                 }
             }

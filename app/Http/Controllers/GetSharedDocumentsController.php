@@ -71,8 +71,10 @@ class GetSharedDocumentsController extends Controller
                 $user = User::find($userId);
                 if ($user) {
                     $replyToCollection = collect($shareDocument->document->toRais->replyTo);
+                    $idDocument =  $shareDocument->document->id;
+                    $sharedFindDocument =ShareDocument::where('document_id', $idDocument)->where('to', $user->id)->exists();
                     $userHasSentDocument = $replyToCollection->contains($user->id);
-                    $user->hasSentDocument = $userHasSentDocument;
+                    $user->hasSentDocument = $sharedFindDocument;
                     $replyToUsers[] = $user;
                 }
             }
