@@ -1,14 +1,12 @@
 <?php
 
-use App\Http\Controllers\DownloadZipArchiveFiles;
-use App\Http\Controllers\GetDocumentsController;
+use App\Http\Controllers\GetFilesController;
 use App\Http\Controllers\GetSharedDocumentsController;
 use App\Http\Controllers\GetUsersListController;
 use App\Http\Controllers\ReplyToDocumentController;
 use App\Http\Controllers\ShareDocumentController;
 use App\Http\Controllers\ToRaisController;
 use App\Http\Controllers\UpdateStatusDocument;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Login;
 use App\Http\Controllers\Auth\Register;
@@ -48,5 +46,5 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post("/to-rais-reply/{uuid}", [ShareDocumentController::class, 'toRaisReplyDocument']);
     Route::get('/get-replied-to-rais', [ToRaisController::class, 'getRepliedToRais']);
     Route::get('/get-replied-to-rais/{id}', [ToRaisController::class, 'getRepliedToRaisById']);
-    Route::get('/get-documents', [GetDocumentsController::class, 'getDocuments']);
+    Route::get('/get-files', [GetFilesController::class, 'getFails']);
 });

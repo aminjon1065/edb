@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class GetFilesController extends Controller
 {
     public function getFails (){
-        $files = File::where('user_id', auth()->user()->id)->with(['document'])->get();
+        $files = File::where('user_id', auth()->user()->id)->with('user')->get();
         return response()->json($files);
     }
 }
