@@ -23,7 +23,7 @@ class DownloadZipArchiveFiles extends Controller
 
         if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
             foreach ($files as $file) {
-                $filePath = ('storage/documents/' . $document->user->region . '/' . $document->uuid . '/' . $file->name);
+                $filePath = ('storage/documents/' . $document->user->region . '/' . $file->folder . '/' . $file->name);
                 if (!File::exists($filePath)) {
                     return response()->json(['error' => 'File not found: ' . $file->name], 404);
                 }

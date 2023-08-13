@@ -27,12 +27,15 @@ class ReplyToDocumentController extends Controller
             foreach ($request->file('files') as $file) {
                 $originalName = str_replace(' ', '_', $file->getClientOriginalName());
                 $filename = auth()->user()->first_name . '_' . auth()->user()->last_name . '_' . auth()->user()->region . '_' . uniqid() . '_' . $originalName;
-                $file->storeAs('public/documents/' . auth()->user()->region . '/' . $document->uuid, $filename);
+                $folder = date('d-m-Y');
+                $file->storeAs('public/documents/' . auth()->user()->region . '/' . $folder, $filename);
                 $document->file()->create([
                     'name' => $filename,
                     'size' => round($file->getSize() / 1024 / 1024 * 1024, 2),
                     'extension' => $file->getClientOriginalExtension(),
+                    'folder' => $folder,
                     'document_id' => $document->id,
+                    'user_id' => auth()->user()->id
                 ]);
             }
         }

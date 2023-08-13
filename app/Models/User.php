@@ -52,13 +52,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function document():HasMany
+
+    public function document(): HasMany
     {
         return $this->hasMany(Document::class);
     }
-    public function shareDocument():HasMany
+
+    public function shareDocument(): HasMany
     {
         return $this->hasMany(ShareDocument::class);
     }
 
+    public function file(): HasMany
+    {
+        return $this->hasMany(File::class);
+    }
 }

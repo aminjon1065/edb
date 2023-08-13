@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('size');
             $table->string('extension');
+            $table->string('folder');
             $table->foreignId('document_id')->references('id')->on('documents')->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

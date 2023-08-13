@@ -32,8 +32,8 @@ class GetSharedDocumentsController extends Controller
                 return $query->where(function ($subQuery) use ($searchQuery) {
                     $subQuery->whereHas('document.user', function ($subSubQuery) use ($searchQuery) {
                         $subSubQuery->where('title', 'LIKE', '%' . $searchQuery . '%')
-                            ->orWhere('content', 'LIKE', '%' . $searchQuery . '%')
-                            ->orWhere('type', 'LIKE', '%' . $searchQuery . '%');
+                            ->orWhere('content', 'LIKE', '%' . $searchQuery . '%');
+//                            ->orWhere('type', 'LIKE', '%' . $searchQuery . '%');
                     })->orWhereHas('fromUser', function ($subSubQuery) use ($searchQuery) {
                         $subSubQuery->where('full_name', 'LIKE', '%' . $searchQuery . '%');
                     })->orWhereHas('toUser', function ($subSubQuery) use ($searchQuery) {
@@ -50,6 +50,10 @@ class GetSharedDocumentsController extends Controller
             })
             ->when($request->input('order') && $request->input('column'), function ($query) use ($request) {
                 return $query->orderBy($request->input('column'), $request->input('order'));
+            })->when($request->input('type'), function ($query, $type) {
+                return $query->whereHas('document', function ($subQuery) use ($type) {
+                    $subQuery->where('type', $type);
+                });
             });
         $documents = $query->paginate(10);
         return response()->json($documents);

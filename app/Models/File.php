@@ -15,11 +15,17 @@ class File extends Model
         'name',
         'size',
         'extension',
-        'document_id'
+        'folder',
+        'document_id',
+        'user_id'
     ];
 
     public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
+    }
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
