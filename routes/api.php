@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GetDocumentsController;
 use App\Http\Controllers\GetFilesController;
 use App\Http\Controllers\GetSharedDocumentsController;
 use App\Http\Controllers\GetUsersListController;
@@ -47,4 +48,6 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('/get-replied-to-rais', [ToRaisController::class, 'getRepliedToRais']);
     Route::get('/get-replied-to-rais/{id}', [ToRaisController::class, 'getRepliedToRaisById']);
     Route::get('/get-files', [GetFilesController::class, 'getFails']);
-});
+    Route::get('/get-documents', [GetDocumentsController::class, 'getDocuments']);
+})->middleware('throttle:100,1');
+

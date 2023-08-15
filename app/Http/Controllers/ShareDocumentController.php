@@ -110,6 +110,7 @@ class ShareDocumentController extends Controller
             ]);
             NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
         }
+        $document->toRais()->update(['opened' => true]);
         return response()->json($document);
     }
 }

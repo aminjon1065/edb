@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 
 class GetDocumentsController extends Controller
 {
-    public function getDocuments()
+    public function getDocuments(Request $request)
     {
-        $documents = Document::where('user_id', auth()->user()->id)->with(['file', 'replyToDocument', 'shareDocument.toUser'])->get();
+        $start = $request->input('start'); // Получение даты начала месяца из запроса
+        $end = $request->input('end');     // Получение даты конца месяца из запроса
+
+        $documents = Document::where('user_id', auth()->user()->id)
+            ->whereBetween('created_at', [$start, $end]) // Фильтрация документов по дате
+            ->with(['file'])
+            ->get();
+
         return response()->json($documents);
     }
 }
