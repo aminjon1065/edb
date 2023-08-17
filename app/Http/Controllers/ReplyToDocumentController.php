@@ -19,7 +19,8 @@ class ReplyToDocumentController extends Controller
             'content' => $request->input('content'),
             'control' => $replyToDocument->control,
             'status' => $replyToDocument->status,
-            'type' => $replyToDocument->type,
+            'type_tj' => $replyToDocument->type_tj,
+            'type_ru' => $replyToDocument->type_ru,
             'user_id' => auth()->user()->id,
             'date_done' => $request->input('date_done'),
         ]);

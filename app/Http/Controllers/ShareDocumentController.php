@@ -20,7 +20,9 @@ class ShareDocumentController extends Controller
             'content' => $request->input('content'),
             'control' => $request->input('control'),
             'status' => 'pending',
-            'type' => $request->input('type'),
+            "code"=> $request->input('code'),
+            'type_tj' => $request->input('type_tj'),
+            'type_ru' => $request->input('type_ru'),
             'user_id' => auth()->user()->id,
             'date_done' => $request->input('date_done'),
         ]);
@@ -68,7 +70,6 @@ class ShareDocumentController extends Controller
                 NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
             }
         }
-
 
         if (!$document->shareDocument) {
             return response()->json('Ошибка при отправке', 200);

@@ -19,7 +19,9 @@ class Document extends Model
         'content',
         'control',
         'status',
-        'type',
+        "code",
+        'type_tj',
+        'type_ru',
         'user_id',
         'date_done'
     ];

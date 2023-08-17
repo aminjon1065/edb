@@ -38,9 +38,7 @@ class GetSharedDocumentsController extends Controller
                         $subSubQuery->where('full_name', 'LIKE', '%' . $searchQuery . '%');
                     })->orWhereHas('toUser', function ($subSubQuery) use ($searchQuery) {
                         $subSubQuery->where('full_name', 'LIKE', '%' . $searchQuery . '%');
-                    })
-
-                    ;
+                    });
                 });
             })
             ->when($request->input('startDate') && $request->input('endDate'), function ($query) use ($request) {
@@ -52,7 +50,7 @@ class GetSharedDocumentsController extends Controller
                 return $query->orderBy($request->input('column'), $request->input('order'));
             })->when($request->input('type'), function ($query, $type) {
                 return $query->whereHas('document', function ($subQuery) use ($type) {
-                    $subQuery->where('type', $type);
+                    $subQuery->where('code', $type);
                 });
             });
         $documents = $query->paginate(10);
@@ -75,8 +73,8 @@ class GetSharedDocumentsController extends Controller
                 $user = User::find($userId);
                 if ($user) {
                     $replyToCollection = collect($shareDocument->document->toRais->replyTo);
-                    $idDocument =  $shareDocument->document->id;
-                    $sharedFindDocument =ShareDocument::where('document_id', $idDocument)->where('to', $user->id)->exists();
+                    $idDocument = $shareDocument->document->id;
+                    $sharedFindDocument = ShareDocument::where('document_id', $idDocument)->where('to', $user->id)->exists();
                     $userHasSentDocument = $replyToCollection->contains($user->id);
                     $user->hasSentDocument = $sharedFindDocument;
                     $replyToUsers[] = $user;

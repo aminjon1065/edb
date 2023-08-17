@@ -18,7 +18,9 @@ return new class extends Migration
             $table->text('content')->nullable();
             $table->boolean('control')->default(false)->nullable();
             $table->string('status');
-            $table->string('type');
+            $table->string('code');
+            $table->string('type_tj');
+            $table->string('type_ru');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->dateTime("date_done")->nullable();
             $table->timestamps();
