@@ -24,7 +24,6 @@ class GetSharedDocumentsController extends Controller
         if (!auth()->check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
         $userId = auth()->id();
         $query = ShareDocument::where($field, $userId)
             ->with(['toUser', 'fromUser', 'document'])

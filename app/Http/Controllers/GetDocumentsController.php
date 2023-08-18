@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\ShareDocument;
 use Illuminate\Http\Request;
 
 class GetDocumentsController extends Controller
@@ -23,22 +24,24 @@ class GetDocumentsController extends Controller
     {
         $start = $request->input('start'); // Получение даты начала месяца из запроса
         $end = $request->input('end');     // Получение даты конца месяца из запроса
-        $documents = Document::where('user_id', auth()->user()->id)
-            ->whereBetween('created_at', [$start, $end]) // Фильтрация документов по дате
-            ->with(['file'])
+        $field = $request->input('field');
+        $shared = ShareDocument::where($field, auth()->user()->id)
+            ->whereBetween('created_at', [$start, $end])
+            ->with(['document'])
             ->get();
 
-        // Group by code and then map to get title and count for each group
-        $grouped = $documents->groupBy('code')
-            ->map(function ($group) {
-                return [
-                    'type_tj' => $group->first()->type_tj,
-                    'type_ru' => $group->first()->type_ru,
-                    'count' => $group->count()
-                ];
-            });
+        $grouped = $shared->groupBy(function ($date) {
+            return $date->document->code; // grouping by document's code
+        })->map(function ($group) {
+            return [
+                'type_tj' => $group->first()->document->type_tj, // Adjust based on your model structure
+                'type_ru' => $group->first()->document->type_ru, // Adjust based on your model structure
+                'count' => $group->count()
+            ];
+        });
 
-        return response()->json($grouped);
+        // Преобразование коллекции в массив
+        return response()->json($grouped->values()->all());
     }
 
 }
