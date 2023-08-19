@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Models\ShareDocument;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class GetDocumentsController extends Controller
@@ -39,9 +40,15 @@ class GetDocumentsController extends Controller
                 'count' => $group->count()
             ];
         });
-
-        // Преобразование коллекции в массив
         return response()->json($grouped->values()->all());
     }
 
+    public function pdfReports($lang)
+    {
+        $documents = Document::where('user_id', auth()->user()->id)
+            ->with(['file'])
+            ->get();
+        $pdf = PDF::loadView('pdf.invoice', compact('documents'));
+        return $pdf->download('report.pdf');
+    }
 }

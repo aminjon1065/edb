@@ -52,5 +52,6 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('/get-documents', [GetDocumentsController::class, 'getDocuments']);
     Route::delete('/delete/{uuid}', [DocumentController::class, 'delete']);
     Route::post("/reports", [GetDocumentsController::class, 'report']);
+    Route::post("/pdf-reports/{lang}", [GetDocumentsController::class, 'pdfReports']);
 })->middleware('throttle:100,1');
 
