@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DownloadZipArchiveFiles;
+use App\Http\Controllers\GetDocumentsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-
 Route::get('/download-all/{uuid}', [DownloadZipArchiveFiles::class, 'downloadAllFiles']);
+Route::post("/pdf-reports/{lang}", [GetDocumentsController::class, 'pdfReports']);
+

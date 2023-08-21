@@ -1,26 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang={{$lang}}>
 <head>
-    <title>Report PDF</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Document</title>
 </head>
 <body>
 <h2>Report</h2>
 <table>
     <thead>
     <tr>
-        <th>Type TJ</th>
-        <th>Type RU</th>
-        <th>Count</th>
+        @if($lang != 'ru')
+            <th>Номгу</th>
+            <th>миқдор</th>
+        @else
+            <th>Нвзвание</th>
+            <th>кол-во</th>
+        @endif
     </tr>
     </thead>
     <tbody>
-    @foreach ($grouped as $item)
-        <tr>
-            <td>{{ $item['type_tj'] }}</td>
-            <td>{{ $item['type_ru'] }}</td>
-            <td>{{ $item['count'] }}</td>
-        </tr>
-    @endforeach
+    @if($lang != 'ru')
+        @foreach ($grouped as $item)
+            <tr>
+                <td>{{ $item['type_tj'] }}</td>
+                <td>{{ $item['count'] }}</td>
+            </tr>
+        @endforeach
+    @else
+        @foreach ($grouped as $item)
+            <tr>
+                <td>{{ $item['type_ru'] }}</td>
+                <td>{{ $item['count'] }}</td>
+            </tr>
+        @endforeach
+    @endif
     </tbody>
 </table>
 </body>

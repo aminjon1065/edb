@@ -5,6 +5,7 @@ use App\Http\Controllers\GetDocumentsController;
 use App\Http\Controllers\GetFilesController;
 use App\Http\Controllers\GetSharedDocumentsController;
 use App\Http\Controllers\GetUsersListController;
+use App\Http\Controllers\OtherFilesController;
 use App\Http\Controllers\ReplyToDocumentController;
 use App\Http\Controllers\ShareDocumentController;
 use App\Http\Controllers\ToRaisController;
@@ -52,6 +53,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('/get-documents', [GetDocumentsController::class, 'getDocuments']);
     Route::delete('/delete/{uuid}', [DocumentController::class, 'delete']);
     Route::post("/reports", [GetDocumentsController::class, 'report']);
-    Route::post("/pdf-reports/{lang}", [GetDocumentsController::class, 'pdfReports']);
+    Route::get("/pdf-reports/{lang}", [GetDocumentsController::class, 'pdfReports']);
+    Route::post("/other-files", [OtherFilesController::class, 'store']);
 })->middleware('throttle:100,1');
 
