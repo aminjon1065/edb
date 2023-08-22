@@ -17,10 +17,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-//        $firstName = fake()->firstName();
-        $firstName = "Umumi";
-//        $lastName = fake()->lastName();
-        $lastName = "Umumiev";
+        $firstName = fake()->firstName();
+        $lastName = fake()->lastName();
         return [
             'uuid' => fake()->uuid(),
             'first_name' => $firstName,
@@ -32,7 +30,7 @@ class UserFactory extends Factory
             'rank' => fake()->randomLetter(),
             'avatar' => fake()->imageUrl(),
             'signature' => fake()->imageUrl(),
-            'email' => "umumi@admin.com",
+            'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'role' => 0,
