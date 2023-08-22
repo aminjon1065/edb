@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\DownloadZipArchiveFiles;
 use App\Http\Controllers\GetDocumentsController;
 use App\Http\Controllers\GetFilesController;
 use App\Http\Controllers\GetSharedDocumentsController;
@@ -57,3 +58,4 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post("/other-files", [OtherFilesController::class, 'store']);
 })->middleware('throttle:100,1');
 
+Route::get('/download-all/{uuid}', [DownloadZipArchiveFiles::class, 'downloadAllFiles']);
