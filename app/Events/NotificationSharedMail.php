@@ -34,7 +34,7 @@ class NotificationSharedMail implements ShouldBroadcast
 
     public function broadcastWith(): array
     {
-        return ['message' => $this->message];
+        return ['message' => "NotificationSharedMail event has been fired."];
     }
 
     /**
@@ -45,7 +45,7 @@ class NotificationSharedMail implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('notification.' . $this->userId)
+            new Channel('notification.' . 1)
         ];
     }
 }
