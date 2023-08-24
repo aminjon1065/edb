@@ -7,11 +7,12 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class NotificationSharedMail implements ShouldBroadcast
+class NotificationSharedMail implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -34,7 +35,7 @@ class NotificationSharedMail implements ShouldBroadcast
 
     public function broadcastWith(): array
     {
-        return ['message' => "NotificationSharedMail event has been fired."];
+        return ['message' => $this->message];
     }
 
     /**
@@ -45,7 +46,7 @@ class NotificationSharedMail implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('notification.' . 1)
+            new Channel('notification.' . $this->userId)
         ];
     }
 }
