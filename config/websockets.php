@@ -24,8 +24,8 @@ return [
     'apps' => [
         [
             'id' => env('PUSHER_APP_ID'),
-            'name' => 'EDSM_WEBSOCKETS',
-            'key' => env('PUSHER_APP_KßEY'),
+            'name' => env('APP_NAME'),
+            'key' => env('PUSHER_APP_KEY'),
             'secret' => env('PUSHER_APP_SECRET'),
             'path' => env('PUSHER_APP_PATH'),
             'capacity' => null,
