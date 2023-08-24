@@ -23,9 +23,9 @@ class NotificationSharedMail implements ShouldBroadcast
         $this->userId = $userId;
     }
 
-    public function broadcastWith(): array
+    public function broadcastWith(): string
     {
-        return ['message' => $this->message];
+        return  $this->message;
     }
 
     /**
