@@ -130,6 +130,8 @@ return [
         'passphrase' => null, // парольная фраза для вашего private key (если есть)
     ],
 
+    'verify_peer' => false,
+    'verify_peer_name' => false,
     /*
      * Channel Manager
      * This class handles how channel persistence is handled.
