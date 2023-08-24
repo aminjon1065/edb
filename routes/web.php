@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GetDocumentsController;
 use App\Http\Controllers\DownloadZipArchiveFiles;
-use BeyondCode\LaravelWebSockets\Facades\WebSocketsRouter;
+use App\Http\Controllers\GetDocumentsController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,4 +19,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::post("/pdf-reports/{lang}", [GetDocumentsController::class, 'pdfReports']);
-WebSocketsRouter::webSocket('/app/{appKey}', \BeyondCode\LaravelWebSockets\Http\Controllers\WebSocketController::class);
+
