@@ -38,7 +38,7 @@ class NotificationSharedMail implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('notification.' . $this->userId)
+            new PrivateChannel('notification.' . $this->userId)
         ];
     }
 }
