@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/test-notification', function () {
-    event(new \App\Events\NotificationSharedMail('Test Message', 1));
+    event(new \App\Events\NotificationSharedMail('Test Message', "1"));
     return 'Notification sent';
 });
 
