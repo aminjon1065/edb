@@ -40,7 +40,8 @@ return [
                 'encrypted' => true,
                 'host' => env('APP_URL'),
                 'port' => 6001,
-                'scheme' => 'http'
+                'scheme' => 'http',
+                "useTLS" => true,
             ],
             'client_options' => [
                 // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
