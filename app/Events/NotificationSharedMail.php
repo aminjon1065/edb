@@ -5,17 +5,19 @@ namespace App\Events;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
-class NotificationSharedMail implements ShouldBroadcastNow
+class NotificationSharedMail implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public string $message;
     public int $userId;
+
     /**
      * Create a new event instance.
      */
@@ -23,6 +25,11 @@ class NotificationSharedMail implements ShouldBroadcastNow
     {
         $this->message = $message;
         $this->userId = $userId;
+
+        Log::info('NotificationSharedMail event has been fired.', [  // Запись в лог
+            'message' => $this->message,
+            'userId' => $this->userId
+        ]);
     }
 
     public function broadcastWith(): array
