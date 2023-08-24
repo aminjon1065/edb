@@ -9,7 +9,6 @@ return [
      */
     'dashboard' => [
         'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001),
-        "path" => "laravel-websockets",
     ],
 
     /*
@@ -70,7 +69,7 @@ return [
      * the existing middleware. Or, you can simply stick with this list.
      */
     'middleware' => [
-        'api',
+        'web',
         Authorize::class,
     ],
 
@@ -81,6 +80,7 @@ return [
          * `WebSocketsStatisticsEntry` provided by this package.
          */
         'model' => \BeyondCode\LaravelWebSockets\Statistics\Models\WebSocketsStatisticsEntry::class,
+
         /**
          * The Statistics Logger will, by default, handle the incoming statistics, store them
          * and then release them into the database on each interval defined below.
