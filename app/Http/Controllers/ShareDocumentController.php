@@ -20,7 +20,7 @@ class ShareDocumentController extends Controller
             'content' => $request->input('content'),
             'control' => $request->input('control'),
             'status' => 'pending',
-            "code"=> $request->input('code'),
+            "code" => $request->input('code'),
             'type_tj' => $request->input('type_tj'),
             'type_ru' => $request->input('type_ru'),
             'user_id' => auth()->user()->id,
@@ -67,7 +67,7 @@ class ShareDocumentController extends Controller
                     'toRais' => $request->input('toRais'),
                     'isReply' => false
                 ]);
-                event(new NotificationSharedMail($mailUUID, $item)); // Передаем UUID в метод dispatch()
+                broadcast(new NotificationSharedMail($mailUUID, $item))->toOthers(); // Передаем UUID в метод dispatch()
 //                NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
             }
         }
