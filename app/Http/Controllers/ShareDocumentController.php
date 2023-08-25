@@ -67,7 +67,7 @@ class ShareDocumentController extends Controller
                     'toRais' => $request->input('toRais'),
                     'isReply' => false
                 ]);
-                broadcast(new NotificationSharedMail($mailUUID, $item))->toOthers(); // Передаем UUID в метод dispatch()
+                NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
 //                NotificationSharedMail::dispatch($mailUUID, $item); // Передаем UUID в метод dispatch()
             }
         }
