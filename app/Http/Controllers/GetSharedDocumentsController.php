@@ -32,7 +32,6 @@ class GetSharedDocumentsController extends Controller
                     $subQuery->whereHas('document.user', function ($subSubQuery) use ($searchQuery) {
                         $subSubQuery->where('title', 'LIKE', '%' . $searchQuery . '%')
                             ->orWhere('content', 'LIKE', '%' . $searchQuery . '%');
-//                            ->orWhere('type', 'LIKE', '%' . $searchQuery . '%');
                     })->orWhereHas('fromUser', function ($subSubQuery) use ($searchQuery) {
                         $subSubQuery->where('full_name', 'LIKE', '%' . $searchQuery . '%');
                     })->orWhereHas('toUser', function ($subSubQuery) use ($searchQuery) {
@@ -47,11 +46,19 @@ class GetSharedDocumentsController extends Controller
             })
             ->when($request->input('order') && $request->input('column'), function ($query) use ($request) {
                 return $query->orderBy($request->input('column'), $request->input('order'));
-            })->when($request->input('type'), function ($query, $type) {
+            })
+            ->when($request->input('isControl') !== null, function ($query) use ($request) {
+                $isControl = filter_var($request->input('isControl'), FILTER_VALIDATE_BOOLEAN);
+                return $query->whereHas('document', function ($subQuery) use ($isControl) {
+                    $subQuery->where('control', $isControl);
+                });
+            })
+            ->when($request->input('type'), function ($query, $type) {
                 return $query->whereHas('document', function ($subQuery) use ($type) {
                     $subQuery->where('code', $type);
                 });
             });
+
         $documents = $query->paginate(10);
         return response()->json($documents);
     }

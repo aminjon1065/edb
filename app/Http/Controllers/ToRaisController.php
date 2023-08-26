@@ -27,11 +27,18 @@ class ToRaisController extends Controller
                 $endDate = Carbon::parse($request->input('endDate'))->endOfDay();
                 return $query->whereBetween('created_at', [$startDate, $endDate]);
             })
+            ->when($request->input('isControl') !== null, function ($query) use ($request) {
+                $isControl = filter_var($request->input('isControl'), FILTER_VALIDATE_BOOLEAN);
+                return $query->whereHas('document', function ($subQuery) use ($isControl) {
+                    $subQuery->where('control', $isControl);
+                });
+            })
             ->when($request->input('order') && $request->input('column'), function ($query) use ($request) {
                 return $query->orderBy($request->input('column'), $request->input('order'));
             });
         $documents = $query->paginate(20);
         return response()->json($documents);
+
     }
 
     public function getRepliedToRaisById($id)
