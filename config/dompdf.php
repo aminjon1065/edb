@@ -15,6 +15,7 @@ return array(
 
     'public_path' => null,  // Override the public path if needed
     "DOMPDF_UNICODE_ENABLED" => true,
+    'DOMPDF_DEFAULT_FONT' => 'dejavu sans',
 
     /*
      * Dejavu Sans font is missing glyphs for converted entities, turn it off if you need to show € and £.

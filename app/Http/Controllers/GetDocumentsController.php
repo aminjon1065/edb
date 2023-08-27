@@ -46,14 +46,24 @@ class GetDocumentsController extends Controller
         return response()->json($grouped->values()->all());
     }
 
-    public function pdfReports($lang)
+    public function pdfReports(Request $request, $lang)
     {
-        $start = \Carbon\Carbon::now()->startOfMonth(); // Пример, замените на вашу логику
-        $end = \Carbon\Carbon::now(); // Пример, замените на вашу логику
+        $start = \Carbon\Carbon::parse($request->input("start"));
+        $end = \Carbon\Carbon::parse($request->input("end"));
+        $filed = $request->input("filed");
+        $filedToBlade = ''; // Объявление переменной
+        if ($lang === 'ru' && $filed === 'from') {
+            $filedToBlade = 'Исходящие';
+        } elseif ($lang === 'ru' && $filed === 'to') {
+            $filedToBlade = 'Входящие';
+        } elseif ($lang === 'tj' && $filed === 'from') {
+            $filedToBlade = 'Содиротӣ';
+        } elseif ($lang === 'tj' && $filed === 'to') {
+            $filedToBlade = 'Воридотӣ';
+        }
 
-        // Здесь можно использовать код, похожий на тот, что у вас уже есть в функции report
-        $shared = ShareDocument::where('from', auth()->user()->id)  // 'from' как пример, используйте вашу логику
-        ->whereBetween('created_at', [$start, $end])
+        $shared = ShareDocument::where($filed, auth()->user()->id)
+            ->whereBetween('created_at', [$start, $end])
             ->with(['document'])
             ->get();
         $grouped = $shared->groupBy(function ($date) {
@@ -62,17 +72,15 @@ class GetDocumentsController extends Controller
             $data = [
                 'count' => $group->count()
             ];
-
-            if ($lang === 'ru') {
+            if ($lang == 'ru') {
                 $data['type_ru'] = $group->first()->document->type_ru;
             } else {
                 $data['type_tj'] = $group->first()->document->type_tj;
-                $data['type_ru'] = $group->first()->document->type_ru;
             }
             return $data;
         });
-        // Загрузите шаблон PDF с переданными данными
-        $pdf = PDF::loadView('pdf.invoice', compact('grouped', 'lang'));
+
+        $pdf = PDF::loadView('pdf.invoice', compact('grouped', 'lang', 'start', 'end', 'filedToBlade'));
         return $pdf->download('report.pdf');
     }
 
