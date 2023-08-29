@@ -103,4 +103,17 @@ class GetSharedDocumentsController extends Controller
         ShareDocument::where('uuid', $uuid)->update(['opened' => true]);
     }
 
+    public function getUnreadCount()
+    {
+        if (!auth()->check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        $userId = auth()->id();
+        $unreadCount = ShareDocument::where('to', $userId)
+            ->where('opened', false)
+            ->count();
+
+        return response()->json(['unreadCount' => $unreadCount]);
+    }
+
 }
