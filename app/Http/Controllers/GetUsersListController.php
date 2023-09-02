@@ -31,7 +31,10 @@ class GetUsersListController extends Controller
         })->filter()->values(); // Удалить все значения null из списка и преобразовать в массив
 
         return response()->json($users, 200);
+    }
 
+    public function createUser()
+    {
     }
 
 }
