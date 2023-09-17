@@ -53,12 +53,17 @@ class GetSharedDocumentsController extends Controller
                     $subQuery->where('control', $isControl);
                 });
             })
+            ->when($request->input('isReplied') !== null, function ($query) use ($request) {
+                $isReplied = filter_var($request->input('isReplied'), FILTER_VALIDATE_BOOLEAN);
+                return $query->whereHas('document', function ($subQuery) use ($isReplied) {
+                    $subQuery->where('isReply', $isReplied);
+                });
+            })
             ->when($request->input('type'), function ($query, $type) {
                 return $query->whereHas('document', function ($subQuery) use ($type) {
                     $subQuery->where('code', $type);
                 });
             });
-
         $documents = $query->paginate(10);
         return response()->json($documents);
     }
