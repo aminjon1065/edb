@@ -24,6 +24,7 @@ class ReplyToDocumentController extends Controller
             'type_ru' => $replyToDocument->type_ru,
             'user_id' => auth()->user()->id,
             'date_done' => $request->input('date_done'),
+            "isReply" => true
         ]);
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {

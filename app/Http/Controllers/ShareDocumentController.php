@@ -44,15 +44,23 @@ class ShareDocumentController extends Controller
             }
         }
         if ($request->input('toRais')) {
-            $document->toRais()->create([
-                'uuid' => Str::uuid()->toString(),
-                'management_id' => 4,
-                'document_id' => $document->id,
-                'opened' => false
-            ]);
-            $document->shareDocument()->update([
-                'isReply' => true
-            ]);
+            if ($request->has('to')) {
+                $arrTo = $request->input('to');
+                foreach ($arrTo as $item) {
+                    if ($item=='rais@admin.com' || $item== 'muovin@admin.com')
+                    {
+                        $document->toRais()->create([
+                            'uuid' => Str::uuid()->toString(),
+                            'management_id' => $item,
+                            'document_id' => $document->id,
+                            'opened' => false
+                        ]);
+                        $document->shareDocument()->update([
+                            'isReply' => true
+                        ]);
+                    }
+                }
+            }
         }
         if ($request->has('to')) {
             $arrTo = $request->input('to');

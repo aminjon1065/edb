@@ -35,6 +35,12 @@ class GetUsersListController extends Controller
 
     public function createUser()
     {
+
     }
 
+    public function getAllUsers()
+    {
+        $users = User::paginate("10");
+        return response()->json($users, 200);
+    }
 }

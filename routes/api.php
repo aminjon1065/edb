@@ -58,6 +58,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::post("/other-files", [OtherFilesController::class, 'store']);
     Route::get("/unread-count", [GetSharedDocumentsController::class, 'getUnreadCount']);
     Route::post("/create-user", [GetUsersListController::class, 'createUser']);
+    Route::get('/get-all-users', [GetUsersListController::class, 'getAllUsers']);
 })->middleware('throttle:100,1');
 
 Route::get('/download-all/{uuid}', [DownloadZipArchiveFiles::class, 'downloadAllFiles']);
