@@ -97,7 +97,7 @@ class ShareDocumentController extends Controller
                 'document_id' => $shared->document->id,
             ]);
 //            $raisId = User::where('email', 'rais@admin.com')->firstOrFail()->id;
-            NotificationSharedMail::dispatch($shared->uuid, 3);
+            NotificationSharedMail::dispatch($shared->uuid, $request->input('management_id'));
         }
         return response()->json('error');
     }
